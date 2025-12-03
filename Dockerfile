@@ -22,8 +22,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar el resto de los archivos del proyecto
 COPY . .
 
-# Exponer el puerto 8000 (puerto por defecto de uvicorn)
-EXPOSE 8000
+# Exponer el puerto 80
+EXPOSE 80
 
-# Comando para ejecutar la aplicación
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Comando para ejecutar la aplicación en el puerto 80
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]

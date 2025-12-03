@@ -9,7 +9,22 @@ Utiliza un modelo de deep learning basado en ResNet50 entrenado con PyTorch.
 
 ---
 
-## 📋 Requisitos Previos
+## � Inicio Rápido
+
+```bash
+# 1. Construir la imagen
+docker build -t ofidia-api .
+
+# 2. Ejecutar el contenedor (requiere sudo para puerto 80)
+sudo docker run -d -p 80:80 --name ofidia-container ofidia-api
+
+# 3. Probar que funciona
+curl http://localhost/
+```
+
+---
+
+## �📋 Requisitos Previos
 
 ### Para ejecutar con Docker (Recomendado)
 - Docker instalado en tu sistema Ubuntu
@@ -77,13 +92,18 @@ Este proceso puede tardar varios minutos la primera vez, ya que descarga todas l
 #### 4. Ejecutar el contenedor
 
 ```bash
-docker run -d -p 8000:8000 --name ofidia-container ofidia-api
+docker run -d -p 80:80 --name ofidia-container ofidia-api
 ```
 
 **Parámetros:**
 - `-d`: Ejecuta el contenedor en segundo plano (detached mode)
-- `-p 8000:8000`: Mapea el puerto 8000 del contenedor al puerto 8000 de tu máquina
+- `-p 80:80`: Mapea el puerto 80 del contenedor al puerto 80 de tu máquina
 - `--name ofidia-container`: Asigna un nombre al contenedor
+
+**Nota:** En Ubuntu, para usar el puerto 80 necesitas permisos de administrador. Puedes ejecutar:
+```bash
+sudo docker run -d -p 80:80 --name ofidia-container ofidia-api
+```
 
 #### 5. Verificar que está funcionando
 
@@ -162,17 +182,17 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 ### 1. Desde el navegador
 
 Abre tu navegador y visita:
-- http://localhost:8000/ - Información general de la API
-- http://localhost:8000/docs - Documentación interactiva (Swagger UI)
+- http://localhost/ - Información general de la API
+- http://localhost/docs - Documentación interactiva (Swagger UI)
 
 ### 2. Desde la línea de comandos con curl
 
 ```bash
 # Verificar que la API está funcionando
-curl http://localhost:8000/
+curl http://localhost/
 
 # Enviar una imagen para clasificación
-curl -X POST "http://localhost:8000/predict" \
+curl -X POST "http://localhost/predict" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@/ruta/a/tu/imagen.jpg"
@@ -183,7 +203,7 @@ curl -X POST "http://localhost:8000/predict" \
 ```python
 import requests
 
-url = "http://localhost:8000/predict"
+url = "http://localhost/predict"
 files = {"file": open("imagen_serpiente.jpg", "rb")}
 response = requests.post(url, files=files)
 print(response.json())
@@ -214,11 +234,11 @@ Verifica que el archivo `modelo_serpientes.pth` esté en el directorio raíz del
 
 ### Error de puerto en uso
 
-Si el puerto 8000 ya está en uso:
+Si el puerto 80 ya está en uso, puedes usar otro puerto:
 
 ```bash
-# Con Docker
-docker run -d -p 8080:8000 --name ofidia-container ofidia-api
+# Con Docker - mapear a puerto 8080 en tu máquina
+docker run -d -p 8080:80 --name ofidia-container ofidia-api
 
 # Sin Docker
 uvicorn app:app --host 0.0.0.0 --port 8080
@@ -265,7 +285,7 @@ docker rm ofidia-container
 docker build -t ofidia-api .
 
 # Ejecutar nuevamente
-docker run -d -p 8000:8000 --name ofidia-container ofidia-api
+sudo docker run -d -p 80:80 --name ofidia-container ofidia-api
 ```
 
 ---
